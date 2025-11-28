@@ -295,9 +295,12 @@ func PostgresDecoderBackend(request models.Backend) ([]byte, error) {
 		default:
 			return nil, fmt.Errorf("unknown message type: %q", packet)
 		}
-		if msg == nil {
-			// fmt.Println("msg is nil")
-			return nil, errors.New("msg is nil")
+           if msg == nil {
+           	// fmt.Println("msg is nil")
+           	return nil, errors.New("msg is nil")
+if msg == nil {
+	// fmt.Println("msg is nil")
+	return nil, fmt.Errorf("msg is nil for packet type: %q", packet)
 		}
 		encoded := msg.Encode([]byte{})
 
