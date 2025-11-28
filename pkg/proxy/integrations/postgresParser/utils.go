@@ -549,7 +549,11 @@ func matchingReadablePG(tcsMocks []*models.Mock, requestBuffers [][]byte, h *hoo
 		if len(mock.Spec.PostgresRequests) == len(requestBuffers) {
 			for requestIndex, reqBuff := range requestBuffers {
 				bufStr := base64.StdEncoding.EncodeToString(reqBuff)
-				encoded, _ := PostgresDecoderBackend(mock.Spec.PostgresRequests[requestIndex])
+				encoded, err := PostgresDecoderBackend(mock.Spec.PostgresRequests[requestIndex])
+				if err != nil {
+					// Skip this request if we can't decode it
+					continue
+				}
 				if bufStr == "AAAACATSFi8=" {
 					ssl := models.Frontend{
 						Payload: "Tg==",
