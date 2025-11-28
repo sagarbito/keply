@@ -182,6 +182,9 @@ func PostgresDecoderFrontend(response models.Frontend) ([]byte, error) {
 
 		encoded := msg.Encode([]byte{})
 		// fmt.Println("Encoded packet ", packet, " is ", i, "-----", encoded)
+		if len(encoded) == 0 {
+			return nil, fmt.Errorf("failed to encode message type: %q", packet)
+		}
 		resbuffer = append(resbuffer, encoded...)
 	}
 	return resbuffer, nil
