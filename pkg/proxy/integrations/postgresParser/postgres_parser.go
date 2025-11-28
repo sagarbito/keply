@@ -198,6 +198,9 @@ func encodePostgresOutgoing(requestBuffer []byte, clientConn, destConn net.Conn,
 						msg, err = pg.TranslateToReadableBackend(buffer[i:(i + pg.BackendWrapper.BodyLen + 5)])
 						if err != nil && buffer[i] != 112 {
 							logger.Error("failed to translate the request message to readable", zap.Error(err))
+							// Skip processing this message if there was an error
+							i += (5 + pg.BackendWrapper.BodyLen)
+							continue
 						}
 						if pg.BackendWrapper.MsgType == 'p' {
 							pg.BackendWrapper.PasswordMessage = *msg.(*pgproto3.PasswordMessage)
