@@ -28,7 +28,7 @@ def update_task(task_id):
         if task["id"] == task_id:
             task["title"] = request.form.get("title", task["title"])
             task["description"] = request.form.get("description", task["description"])
-            task["done"] = request.form.get("done", str(task["done"])) == "True"
+            task["done"] = request.form.get("done", str(task["done"])).lower() == "true"
             return jsonify(task)
     return jsonify({"error": "Task not found"}), 404
 
